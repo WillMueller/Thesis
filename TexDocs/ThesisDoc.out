@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Discussion \046 Conclusion}{}% 2
+\BOOKMARK [1][-]{section.3}{Work Done and Paths Followed}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Indistinguishablity For Sets}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Suffix Algorithm}{section.3}% 5
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Suffix Introduction}{subsection.3.2}% 6
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Intersection of Sx is Non-Vital}{subsection.3.2}% 7
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Algorithm}{subsection.3.2}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Worked Example}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.4}{Trivial Algorithm}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.5}{Edge Cut Method}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.6}{NFA to DFA Computation}{section.3}% 12
+\BOOKMARK [1][-]{section.4}{Extension of Weilin Wang and Lafortune Cluster Table}{}% 13
+\BOOKMARK [2][-]{subsection.4.1}{Intro and Changes}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.2}{Complexity}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.3}{Worked Example}{section.4}% 16
