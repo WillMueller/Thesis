@@ -12,7 +12,7 @@ LevelSet::LevelSet()
 LevelSet::LevelSet(QImage image)
 {
     m_image_master = image;
-    m_image = image;
+    m_image = m_image_master;
 
     // Initialize derivative arrays
 

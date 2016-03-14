@@ -36,7 +36,7 @@ void MainWindow::on_run_button_clicked()
 
     // If outside region set to -1
     // If inside region set to +1
-    // Magical color is: RGB = (255,0,23)
+    // Magical color is: RGB = (255,0,0)
 
     for(int i = 1; i < m_level_set.m_width-1; i++)
     {
@@ -65,7 +65,7 @@ void MainWindow::on_run_button_clicked()
     // Loop while there are still more pictures
     while(FILE *file = fopen(name.c_str(), "r"))
     {
-        m_level_set.m_image_master = QImage(QString::fromStdString(name));
+        m_level_set.m_image_master = QImage(QString::fromStdString(name)).convertToFormat(QImage::Format_RGB32);
 
         // t is a measure of how fast the functional is moving
         // Current scheme is to do 100 iterations
@@ -76,8 +76,8 @@ void MainWindow::on_run_button_clicked()
         }
 
         m_level_set.paint_border();
-        m_level_set.m_image.save(QString::fromStdString(m_output_filename + std::to_string(m_picture_num) + m_file_extension));
 
+        m_level_set.m_image.save(QString::fromStdString(m_output_filename + std::to_string(m_picture_num) + ".png"));
         QPixmap pixmap(QPixmap::fromImage(m_level_set.m_image));
         QGraphicsScene* scene = new QGraphicsScene;
         scene->addPixmap(pixmap);
@@ -131,6 +131,7 @@ void MainWindow::get_picture(){
     m_filename = m_filename.substr(0,first+1);
 
     QImage image(fileName);
+    image = image.convertToFormat(QImage::Format_RGB32);
 
     QPixmap pixmap(QPixmap::fromImage(image));
     QGraphicsScene* scene = new QGraphicsScene;
