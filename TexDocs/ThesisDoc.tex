@@ -80,6 +80,7 @@
 
 \begin{document}
 	\maketitle
+	\newpage
 	\tableofcontents
 	\newpage
 	\section{Introduction}
@@ -222,7 +223,7 @@
 				\end{center}
 
 		\subsection{Level Sets}
-			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
+			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\times\R^+\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x,t)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
 
 			\begin{prop}\label{pr:curvtofn}
 				Let $\gamma\in C_e$ evolve according to the ordinary differential equation described in theorem \ref{th:decentfunc}:
@@ -237,7 +238,48 @@
 
 			\end{prop}
 
+			\begin{proof}
+				Take $F = \frac{\partial g}{\partial x} - \frac{\partial}{\partial x}$, where $f$ and $g$ are defined by:
+				\begin{align}\label{eq:Fdef}
+				    L(s,\gamma(s,t),\dot\gamma(s,t)) &= [f(\gamma(s,t)),g(\gamma(s,t))]\cdot \dot\gamma(s,t)
+				\end{align}
+				Through the use of equation \ref{eq:decentsimp} the following vector equation was found.
 
+				\begin{align*}
+    				\begin{bmatrix}
+    					\frac{\partial \gamma_x}{\partial t}\biggr\rvert_{(s,t)}\\
+    					\frac{\partial \gamma_y}{\partial t}\biggr\rvert_{(s,t)}
+    				\end{bmatrix} 
+    				&= - \begin{bmatrix}
+    					\frac{\partial f}{\partial x}\dot\gamma_x + \frac{\partial g}{\partial x}\dot\gamma_y - \frac{d}{ds} f(\gamma)\biggr\rvert_{(s,t)}\\
+    					\frac{\partial f}{\partial y}\dot\gamma_x + \frac{\partial g}{\partial y}\dot\gamma_y - \frac{d}{ds} g(\gamma)\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					\frac{\partial f}{\partial y}\dot\gamma_y - \frac{\partial g}{\partial x}\dot\gamma_y\biggr\rvert_{(s,t)}\\
+    					\frac{\partial g}{\partial x}\dot\gamma_x - \frac{\partial f}{\partial y}\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					\bigg(\frac{\partial g}{\partial x} - \frac{\partial f}{\partial y}\bigg)(-\dot\gamma_y)\biggr\rvert_{(s,t)}\\
+    					\bigg(\frac{\partial g}{\partial x} - \frac{\partial f}{\partial y}\bigg)\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					F(\gamma)(-\dot\gamma_y)\biggr\rvert_{(s,t)}\\
+    					F(\gamma)\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=F(\gamma(s,t))\cdot \vec N_\gamma
+				\end{align*}
+			\end{proof}
+			Using proposition \ref{pr:curvtofn} it is now possible to show the following theorem.
+			\begin{thm}\label{th:levelset}
+				Let $u$ be a mapping $\Omega\times\R^+\rightarrow\R$ with $u(\gamma(s,t),t) = 0$ for all $s\in[0,1]$ and $t\in\R^+$. Let $F$ be a function as described in equation \ref{eq:Fdef} then:
+				\begin{equation}\label{eq:ulevelset}
+					\frac{\partial u}{\partial t} = -F\|\vec\nabla u\|
+				\end{equation}
+			\end{thm}
+
+			\begin{proof}
+				
+			\end{proof}
 
 	\section{Design}
 	The functional pieces described in Section \ref{sec:funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
