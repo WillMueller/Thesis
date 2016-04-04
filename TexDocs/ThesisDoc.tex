@@ -292,11 +292,140 @@
 		\subsection{Webcam-Generated Hand Gesture Images}
 			Faisal
 
-	\section{Implementation}
-		Zach
+\section{Implementation}
+		Due to previous experience, the group decided that we would implement the application in either Python or C++. The benefits and drawbacks of each programming language are shown in Table Zach1. Essentially, Python and C++ are opposites. Where one excels, the other does not. Python is a has a fast development time due to simpler code, multiple third party packages, and previous team experience. However, it is much slower than C++ which is not a desired trait for our region tracking algorithm as it is computationally intensive. Conversely, C++ is very efficient but is more complicated to develop in and would thus have a slower development time. As such, the team decided that we would create a Python application for fast prototyping to create a proof-of-concept and translate to C++ when the team was ready to speed up the application. Finally, the code was provisioned using GitHub allowing for increased development and release cycle times. The repository is hosted here: \url{https://github.com/WillMueller/Thesis}. Using GitHub also assisted the issue tracking process and prompted code to be written in a modular fashion and be thoroughly documented. 
+      
+      \begin{center}
+      \begin{table}[!ht]
+      \caption{Pros and cons of different development languages}
+      \begin{tabular}{ | l | p{5cm} | p{5cm} |}
+        \hline			
+        Language & Pros & Cons \\
+        \hline
+        Python 
+        
+        & 
+
+		\begin{itemize}
+          \item Team has prior experience
+          \item Many packages to utilize for image I/O
+          \item Quick development time due to many built-in shortcuts
+          \item No issues for cross operating system development
+        \end{itemize}
+
+		& 
+
+        \begin{itemize}
+          \item Dependence on third party packages may lead to undesirable constraints  
+          \item No IDE to help with the development of the GUI
+          \item Interpreted languages are slower than compiled
+        \end{itemize}
+
+ 		\\
+        \hline
+        C++
+        
+        & 
+
+		\begin{itemize}
+          \item Very fast as it is a compiled low level language
+          \item Qt Creator IDE available for GUI development
+          \item Low level nature of code leads to better optimization possibilities
+          \item Less third party packages to depend on give a greater flexibility
+        \end{itemize}
+
+		& 
+
+        \begin{itemize}
+          \item Team has less experience
+          \item Doing file and image I/O is more difficult as there are few packages
+          \item Slower development time due to complexity of code and lower level nature of C++
+          \item Development tool chains are different across operating systems
+        \end{itemize}
+
+ 		\\
+        \hline  
+      \end{tabular}
+      \end{table}
+      \end{center}
+      
+      \subsection{Python Implementation}
+      
+	The code for the Python implementation can be found here: \url{https://github.com/WillMueller/Thesis/tree/master/PythonImplimentation}. The code is split into two files, gui.py and descent.py. The first file is used to create the Python GUI and relies on the PyQt package (\url{https://www.riverbankcomputing.com/software/pyqt/intro} for its creation. The third party package Pillow (\url{https://github.com/python-pillow/Pillow}) was also used for image I/O and manipulation. The second file was used for performing the mathematical procedures required for the region tracking algorithm. Namely, calculating derivatives and the gradient descent of the functions. 
+        
+	The GUI of the Python implementation is shown in Figure \ref{python_implementation}. The GUI is minimal with two buttons; one to open the initial image for the region tracking algorithm and one to commence the algorithm. The Python implementation was also a simplified implementation of the algorithm and could only handle an initial image with a region of interest highlighted in red. It then and ran the gradient descent on the same image. For every 100 iterations of the gradient descent, the GUI displayed the new region highlighted in blue. This simplified algorithm allowed for quicker prototyping and verification of the gradient descent function as any errors caused by the sequencing images was removed.
+      
+      \begin{figure}[!ht]
+      \caption{Python GUI Implementation}
+      \centering
+        \includegraphics[width=1\textwidth]{python}
+      \label{python_implementation}
+        \end{figure}
+        
+    \subsection{C++ Implementation}
+    As alluded to earlier, speed is a critical component to implementing this region tracking algorithm in a real world context. Speed is positively related with all components of the triple bottom line. In the medical imaging domain, if the application runs efficiently it is associated with reduced costs, improved segmentation which might yield better treatment to patients, and a reduced ecological footprint due to lower power consumption. Thus, a C++ implementation was completed to replicate a practical implementation of this algorithm. It was also beneficial to make a GUI for the application as it would assist in testing and verification of the algorithm. It would allow any user to quickly change parameter values and test different combinations of the functionals based on the attributes of their image sequence. To aid in the development of the GUI, the Qt framework and the Qt Creator IDE was used (\url{http://www.qt.io/}).
+    
+    By looking at the code base (\url{https://github.com/WillMueller/Thesis/tree/master/CImplimentations}) the C++ structure mirrors that of the Python implementation. The two main files and their associated headers are mainwindow..cpp and levelset.cpp. The first file is the business logic of the GUI and uses levelset.cpp to apply the algorithm to the user's inputs. The second file implements a standalone class that performs the algorithm in a series of steps. In the first step, initialization, the user creates the object by giving it an initial image with a highlighted region. Next, they set the parameter values of the functionals and the number of iterations for the gradient descent. Finally, they run the algorithm. In the context of the GUI, these steps are formalized in Figure \ref{cpp_implementation} and the subsequent bullet list.
+    
+    \begin{figure}[!ht]
+      \caption{C++ GUI Implementation}
+      \centering
+      \includegraphics[width=0.8\textwidth]{c++}
+      \label{cpp_implementation}
+    \end{figure}
+    
+    Steps the user takes to utilize the application:
+    \begin{enumerate}
+    	\item Open the initial image with the region of interest highlighted in red. The images must be in the same directory and have the format X.1.png, X.2.png,..., X.N.png. Where X can be any string and N is the number of images. The user is not restricted to using PNG's and can use any of the popular image extensions (.jpg, .png, .bmp, etc.).
+        \item Decide which functionals to use and set the parameter values in the text fields. Note that there are two fields for mean and variance as it can be applied to both the inside and outside of the region.
+        \item Decide on the number of iterations the gradient descent should perform on each image.
+        \item Run the region tracking algorithm.
+        \item As the algorithm runs, it will output each image with the region highlighted in blue after the defined number of iterations is run.
+        \item After the algorithm has been applied to every image in the sequence, the user can flip through each image and see how the region evolves over the sequence.
+	\end{enumerate}    
+    
+    There are a couple of things to note with the C++ implementation. First, we wanted to simulate a real world application as closely as possible. Mathematically, we know the gradient descent will eventually reach some critical point given enough iterations. However, in a pragmatic setting, it is unfeasible to wait for that many iterations. Hence, we chose to default the number of iterations to 100 as this produced a reasonable computation time on consumer grade hardware. At 100 iterations, the time to process a single image was measured in tens of seconds. For the medical image domain, where image sequences range in the hundreds, this equates to a few hours of computation time. Depending on the urgency of the case, this competes directly with the time it would take humans. This justified the use of 100 iterations as a realistic number to compare this algorithm's ability against ground truth. The last thing to note is the speedup realized by the conversion to a C++ implementation. Keeping everything else constant, the conversion to C++ yielded an increase in performance by 400-500\%. This turned simulations that took a day into one that took several hours.
 
 	\section{Results}
+		\subsection{Evaluation Criteria}
+		The standard method in medical imaging for evaluating the accuracy of segmentation algorithms is calculating the similarity of the resulting region compared to that produced by manual segmentation [1]. Since these are taken to be the most accurate possible segmentations, results produced manually are known as the ‘ground truth’.
+
+		A proposed method to calculate similarity between regions is given by Mikulka et al. [2]. Consider region A ( I_{A} ) and region B ( I_{B} ), and let I_{A} be the ground truth. Percentage error is comprised of false positives and false negatives. If a pixel at position (x,y) is in I_{B} but not I_{A}, then this is counted as a false positive:
 		
+		\begin{center} E_{Pos} = \sum_{\Omega } |I_{B} - I_{A}| \end{center}
+		
+		Conversely if a pixel at position (x,y) is not in I_{B} but is in I_{A}, then this is counted as a false negative:   
+		
+		\begin{center} E_{Neg} = \sum_{\Omega } |I_{A} - I_{B}| \end{center}
+		
+		Then the total error is:
+		
+		\begin{center} E = E_{Pos} + E_{Pos} \end{center}
+		
+		Percentage error with respect to the total area of the image is (image percentage error) is:
+		
+		\begin{center} \frac{E}{I_{A}} \end{center}
+		
+		Percentage error with respect to the total area of the region from ground truth (region percentage error) is:
+		
+		\begin{center} \frac{E}{\Omega } \end{center}
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/FalsePosFalseNeg.png}
+		\caption{Demonstration of false negatives and false positives where region A is the ground truth.}
+		\label{fig:falsePosFalseNeg}
+		\end{figure}
+
+		\ref{fig:realError} demonstrates the false positives and false negatives of an image segmented by the segmentation algorithm against the same image segmented manually. The red region indicates false negatives, and the blue region indicates true postives (pixels that were in both the regions identified by the algorithm and by manual segmentation). No false positives were identified by the algorithm. The image percentage error is 0.3\%.
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/realError.png}
+		\caption{Demonstration of false negatives and false positives on an image segmented by the segmentation algorithm against the same image segmented manually.}
+		\label{fig:realError}
+		\end{figure}
+
 		\subsection{Final Performance on Medical Images}
 		The results of the algorithm using the final optimized parameters are shown in Figures \ref{fig:hip4_25}, \ref{fig:hip4_350}, and \ref{fig:hip4_375}. 
 		\begin{figure}[H]
