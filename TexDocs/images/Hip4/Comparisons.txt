@@ -1,0 +1,51 @@
+output.25
+
+False Positives: 42
+False Negatives: 3
+True Positives: 1086
+True Negatives: 261013
+Image Size: 262144
+
+
+output.50
+
+False Positives: 42
+False Negatives: 3
+True Positives: 1086
+True Negatives: 261013
+Image Size: 262144
+
+output.75
+
+False Positives: 14
+False Negatives: 13
+True Positives: 909
+True Negatives: 261208
+Image Size: 262144
+
+output.100
+
+False Positives: 106
+False Negatives: 2
+True Positives: 739
+True Negatives: 261297
+Image Size: 262144
+
+
+output.350
+
+False Positives: 39
+False Negatives: 38
+True Positives: 1976
+True Negatives: 260091
+Image Size: 262144
+
+
+output.375
+
+False Positives: 123
+False Negatives: 316
+True Positives: 3031
+True Negatives: 258674
+Image Size: 262144
+
