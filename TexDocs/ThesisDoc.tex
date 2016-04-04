@@ -86,21 +86,12 @@
 
 		Region tracking in a sequence of images seeks to create a computer program that, given a region in an initial image, can identify the region over subsequent images. The tracking is desired to be achieved even if some characteristics of the region change. This report proposes two distinct applications for such a program: hand-gesture tracking and tracking of anatomical structures of CT/MRI scans. While hand-gesture recognition will process images whose sequence represents change in time, the CT/MRI scan will process images whose sequence represents change along a dimension of the 3-dimensional object that was scanned.
 
-<<<<<<< HEAD
 		\subsection{Application: Medical Imaging}
 			The main imaging modalities chosen were X-ray Computed Tomography (CT) and Magnetic Resonance Imaging (MRI) scans. These modalities were chosen due to their diagnostic performance and ubiquity of use. For surgeons these scans are an integral portion of planning and preparing for procedures. The ability to automatically segment tissues and render models of them in 3D aids in this process and can also be used to produce implants that fit the patient's anatomy to a greater degree.
 
 
 		\subsection{Application: Gesture Tracking}
 			Following a hand through a video sequence can provide individuals with a touchless interface like the Kinect. Using the cheap an ubiquitous web cam the ability to follow gestures can allow a user to interact more fluidly with technology and prevent interruption of some tasks.
-=======
-		\subsection{Appliction: Medical Imaging}
-			The main imaging modalities chosen were X-ray Computed Tomography (CT) and Magtetic Resinance Imaging (MRI) scans. These modalities were chosen due to their diagnostic proformance and ubiqity of use. For surgons these scans are an integral portion of planning and preparing for precedures. The ability to automaticaly segment tissues and render models of them in 3D aids in this process and can also be used to produce implants that fit the pateint's antomy to a greater degrree.
-
-
-		\subsection{Aplication: Gesture Tracking}
-			Following a hand through a video sequence can provide individual with a touchless interface like the Kinect. Using the cheap an ubiqitus web cam the ability to follow gestures can allow a user to interact more fluidly with technology and prevent interuption of some tasks.
->>>>>>> 1cc6a8332fbe59243179d3490bb58a38f80979d9
 
 	\section{Prob Def}
 		Produce an algorithm that efficiently tracks regions in medical and video sequences with low error.
@@ -202,7 +193,7 @@
 					\end{proof}
 					These tools are now sufficient to begin designing and implementing an engineering solution to the problem.
 
-		\subsection{Functionals}
+		\subsection{Functionals} \label{sec:funcderiv}
 			Give that $2^\Omega$ is a difficult set to work with and regions tend to consist of contiguous sections of $\omega$, it is reasonable to restrict regions to be those outlined by simple closed curves $\gamma$. This restriction opens up the powerful toolbox of calculus of variation. Within this framework gradient decent can be employed to numerically move towards the minima of the functionals $E$. Under this structure multiple functionals $E$ were designed for specific assumptions on the region characteristics.
 
 
@@ -233,11 +224,6 @@
 			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
 
 			
-
-<<<<<<< HEAD
-		\subsection{Functional Derivations} \label{sec:funcderiv}
-=======
->>>>>>> 1cc6a8332fbe59243179d3490bb58a38f80979d9
 
 	\section{Design}
 	The functional pieces described in Section \ref{sec:funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
