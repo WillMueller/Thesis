@@ -43,8 +43,9 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{verbatim}
+\usepackage[super]{nth}
 
-% \graphicspath{ {../images/} }
+\graphicspath{ {images/} }
 
 \newcommand{\R}{\mathds{R}}
 \newcommand{\Zplus}{\mathds{Z}_+}
@@ -84,15 +85,15 @@
 
 		Region tracking in a sequence of images seeks to create a computer program that, given a region in an initial image, can identify the region over subsequent images. The tracking is desired to be achieved even if some characteristics of the region change. This report proposes two distinct applications for such a program: hand-gesture tracking and tracking of anatomical structures of CT/MRI scans. While hand-gesture recognition will process images whose sequence represents change in time, the CT/MRI scan will process images whose sequence represents change along a dimension of the 3-dimensional object that was scanned.
 
-		\subsection{Appliction: Medical Imaging}
-			The main imaging modalalities chosen were X-ray Computed Tomography (CT) and Magtetic Resinance Imaging (MRI) scans. These modalities were chosen due to their diagnostic proformance and ubiqity of use. For surgons these scans are an integral portion of planning and preparing for precedures. The ability to automaticaly segment tissues and render models of them in 3D aids in this process and can also be used to produce implants that fit the pateint's antomy to a greater degrree.
+		\subsection{Application: Medical Imaging}
+			The main imaging modalities chosen were X-ray Computed Tomography (CT) and Magnetic Resonance Imaging (MRI) scans. These modalities were chosen due to their diagnostic performance and ubiquity of use. For surgeons these scans are an integral portion of planning and preparing for procedures. The ability to automatically segment tissues and render models of them in 3D aids in this process and can also be used to produce implants that fit the patient's anatomy to a greater degree.
 
 
-		\subsection{Aplication: Gesture Tracking}
-			Following a hand through a video sequence can provide idaviduals with a touchless interface like the Kinect. Using the cheap an ubiqitus web cam the ability to follow gestures can allow a user to interact more fluidly with technology and prevent interuption of some tasks.
+		\subsection{Application: Gesture Tracking}
+			Following a hand through a video sequence can provide individuals with a touchless interface like the Kinect. Using the cheap an ubiquitous web cam the ability to follow gestures can allow a user to interact more fluidly with technology and prevent interruption of some tasks.
 
 	\section{Prob Def}
-		Produce an algorithm that eficently tracks regions in medical and video sequences with low error.
+		Produce an algorithm that efficiently tracks regions in medical and video sequences with low error.
 
 	\section{Math}
 		\subsection{Problem Formulation}
@@ -101,33 +102,61 @@
 
 		\subsection{Level Sets}
 
-		\subsection{Functional Derivations}
+		\subsection{Functional Derivations} \label{funcderiv}
 
 	\section{Design}
-		Fasal Aaron
+	The functional pieces described in Section \ref{funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
 
-		\subsection{Medical}
-			Aaron
+		\subsection{Medical Images}
+		On the medical imaging side of the design, our project focused on high-contrast medical images such as those created by CT scans of bone. On these types of images, we were able to exploit high colour invariance of both the inside and outside of the outlined structure. To capture the colour properties of the images, we needed to heavily weigh inside and outside mean colour. Additionally, we also included the variance property in our functional, although this was weighted to a much weaker extent. The mean colour functional component captured the fact that the average colour on the inside and outside stayed relatively constant between images. The colour variance functional component captured a higher order term for the distribution of the pixel colours. On top of the mean and variance functionals, the length functional was added to stabilize the gradient descent.
 
-		\subsection{Gesture}
-			Fasal
+
+
+		\subsection{Webcam-Generated Hand Gesture Images}
+			Faisal
 
 	\section{Implementation}
 		Zach
 
 	\section{Results}
-		Zach
+		
+		\subsection{Final Performance of Medical Images}
+		The results of the algorithm using the final optimized parameters are shown in Figures \ref{fig:hip4_25}, \ref{fig:hip4_350}, and \ref{fig:hip4_375}. 
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.4\textwidth]{Hip4/groundTruth25col.png}
+			\hspace{20pt}
+			\includegraphics[width=0.4\textwidth]{Hip4/output25.png}
+			\caption{Hip image 25 -- ground truth (left) compared to algorithm output with final parameter set (right).}
+			\label{fig:hip4_25}
+		\end{figure}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.4\textwidth]{Hip4/groundTruth350col.png}
+			\hspace{20pt}
+			\includegraphics[width=0.4\textwidth]{Hip4/output350.png}
+			\caption{Hip image 350 -- ground truth (left) compared to algorithm output with final parameter set (right).}
+			\label{fig:hip4_350}
+		\end{figure}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.4\textwidth]{Hip4/groundTruth375col.png}
+			\hspace{20pt}
+			\includegraphics[width=0.4\textwidth]{Hip4/output375.png}
+			\caption{Hip image 375 -- ground truth (left) compared to algorithm output with final parameter set (right).}
+			\label{fig:hip4_375}
+		\end{figure}
+		On image 25 (Figure \ref{fig:hip4_25}), the algorithm incorrectly identified 4.13\% of the image pixels by volume of the ground truth. This corresponds to an incorrect identification of 0.017\% of the image pixels over the entire image. As the algorithm proceeded to subsequent images, the error rate did not increase significantly until the shape of the hip bone changed drastically around the \nth{375} image. This is evidenced by the similar error rate obtained in image 350 (Figure \ref{fig:hip4_350}) compared to image 25. In image 350, the percentage of erroneous pixels was 3.82\% of the volume of the ground truth, and 0.041\% of volume of the entire image. However, by image 375 (Figure \ref{fig:hip4_375}), these error rates increased to 13.12\% and 0.17\%, respectively.
 
+	Overall, the algorithm error rate with these final parameters was averaged over the \nth{25}, \nth{75}, \nth{350}, and \nth{375} images. Due to the amount of manual work required to determine ground truth, the evaluation of the algorithm could only be measured over a subset of the images. The images near the beginning and the end of the sequence were assumed to be most revealing of algorithm performance due to gradual shape changes in this dataset. Over this subset, the average error rate as a fraction of ground truth was 6.00\%. The average error rate as a fraction of the entire image was 0.056\%. While we were aiming to have the average error rate over ground truth lower than 5\%, so the algorithm's final performance did not quite reach our expectations in this regard. However, we were also targeting for our algorithm to have less than a 0.1\% error rate over the entire image region, and it outperformed in this metric.
 	\section{Discussion (3bottom)}
 		Mandy
 
 	\section{Conclusion}
-		AAron
-
 	\section{Future Work}
 		Faisal
-
+	\nocite{*}
 	\bibliographystyle{plain}
-	\bibliography{ref-bibtex}
+	\bibliography{bibliographyExample}
 	
 \end{document}
