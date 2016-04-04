@@ -80,6 +80,7 @@
 
 \begin{document}
 	\maketitle
+	\newpage
 	\tableofcontents
 	\newpage
 	\section{Introduction}
@@ -222,7 +223,7 @@
 				\end{center}
 
 		\subsection{Level Sets}
-			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
+			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\times\R^+\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x,t)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
 
 			\begin{prop}\label{pr:curvtofn}
 				Let $\gamma\in C_e$ evolve according to the ordinary differential equation described in theorem \ref{th:decentfunc}:
@@ -237,7 +238,48 @@
 
 			\end{prop}
 
+			\begin{proof}
+				Take $F = \frac{\partial g}{\partial x} - \frac{\partial}{\partial x}$, where $f$ and $g$ are defined by:
+				\begin{align}\label{eq:Fdef}
+				    L(s,\gamma(s,t),\dot\gamma(s,t)) &= [f(\gamma(s,t)),g(\gamma(s,t))]\cdot \dot\gamma(s,t)
+				\end{align}
+				Through the use of equation \ref{eq:decentsimp} the following vector equation was found.
 
+				\begin{align*}
+    				\begin{bmatrix}
+    					\frac{\partial \gamma_x}{\partial t}\biggr\rvert_{(s,t)}\\
+    					\frac{\partial \gamma_y}{\partial t}\biggr\rvert_{(s,t)}
+    				\end{bmatrix} 
+    				&= - \begin{bmatrix}
+    					\frac{\partial f}{\partial x}\dot\gamma_x + \frac{\partial g}{\partial x}\dot\gamma_y - \frac{d}{ds} f(\gamma)\biggr\rvert_{(s,t)}\\
+    					\frac{\partial f}{\partial y}\dot\gamma_x + \frac{\partial g}{\partial y}\dot\gamma_y - \frac{d}{ds} g(\gamma)\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					\frac{\partial f}{\partial y}\dot\gamma_y - \frac{\partial g}{\partial x}\dot\gamma_y\biggr\rvert_{(s,t)}\\
+    					\frac{\partial g}{\partial x}\dot\gamma_x - \frac{\partial f}{\partial y}\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					\bigg(\frac{\partial g}{\partial x} - \frac{\partial f}{\partial y}\bigg)(-\dot\gamma_y)\biggr\rvert_{(s,t)}\\
+    					\bigg(\frac{\partial g}{\partial x} - \frac{\partial f}{\partial y}\bigg)\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=  \begin{bmatrix}
+    					F(\gamma)(-\dot\gamma_y)\biggr\rvert_{(s,t)}\\
+    					F(\gamma)\dot\gamma_x\biggr\rvert_{(s,t)}
+    				\end{bmatrix}\\
+    				&=F(\gamma(s,t))\cdot \vec N_\gamma
+				\end{align*}
+			\end{proof}
+			Using proposition \ref{pr:curvtofn} it is now possible to show the following theorem.
+			\begin{thm}\label{th:levelset}
+				Let $u$ be a mapping $\Omega\times\R^+\rightarrow\R$ with $u(\gamma(s,t),t) = 0$ for all $s\in[0,1]$ and $t\in\R^+$. Let $F$ be a function as described in equation \ref{eq:Fdef} then:
+				\begin{equation}\label{eq:ulevelset}
+					\frac{\partial u}{\partial t} = -F\|\vec\nabla u\|
+				\end{equation}
+			\end{thm}
+
+			\begin{proof}
+				
+			\end{proof}
 
 	\section{Design}
 	The functional pieces described in Section \ref{sec:funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
@@ -345,7 +387,45 @@
     There are a couple of things to note with the C++ implementation. First, we wanted to simulate a real world application as closely as possible. Mathematically, we know the gradient descent will eventually reach some critical point given enough iterations. However, in a pragmatic setting, it is unfeasible to wait for that many iterations. Hence, we chose to default the number of iterations to 100 as this produced a reasonable computation time on consumer grade hardware. At 100 iterations, the time to process a single image was measured in tens of seconds. For the medical image domain, where image sequences range in the hundreds, this equates to a few hours of computation time. Depending on the urgency of the case, this competes directly with the time it would take humans. This justified the use of 100 iterations as a realistic number to compare this algorithm's ability against ground truth. The last thing to note is the speedup realized by the conversion to a C++ implementation. Keeping everything else constant, the conversion to C++ yielded an increase in performance by 400-500\%. This turned simulations that took a day into one that took several hours.
 
 	\section{Results}
+		\subsection{Evaluation Criteria}
+		The standard method in medical imaging for evaluating the accuracy of segmentation algorithms is calculating the similarity of the resulting region compared to that produced by manual segmentation [1]. Since these are taken to be the most accurate possible segmentations, results produced manually are known as the ‘ground truth’.
+
+		A proposed method to calculate similarity between regions is given by Mikulka et al. [2]. Consider region A ( I_{A} ) and region B ( I_{B} ), and let I_{A} be the ground truth. Percentage error is comprised of false positives and false negatives. If a pixel at position (x,y) is in I_{B} but not I_{A}, then this is counted as a false positive:
 		
+		\begin{center} E_{Pos} = \sum_{\Omega } |I_{B} - I_{A}| \end{center}
+		
+		Conversely if a pixel at position (x,y) is not in I_{B} but is in I_{A}, then this is counted as a false negative:   
+		
+		\begin{center} E_{Neg} = \sum_{\Omega } |I_{A} - I_{B}| \end{center}
+		
+		Then the total error is:
+		
+		\begin{center} E = E_{Pos} + E_{Pos} \end{center}
+		
+		Percentage error with respect to the total area of the image is (image percentage error) is:
+		
+		\begin{center} \frac{E}{I_{A}} \end{center}
+		
+		Percentage error with respect to the total area of the region from ground truth (region percentage error) is:
+		
+		\begin{center} \frac{E}{\Omega } \end{center}
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/FalsePosFalseNeg.png}
+		\caption{Demonstration of false negatives and false positives where region A is the ground truth.}
+		\label{fig:falsePosFalseNeg}
+		\end{figure}
+
+		\ref{fig:realError} demonstrates the false positives and false negatives of an image segmented by the segmentation algorithm against the same image segmented manually. The red region indicates false negatives, and the blue region indicates true postives (pixels that were in both the regions identified by the algorithm and by manual segmentation). No false positives were identified by the algorithm. The image percentage error is 0.3\%.
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/realError.png}
+		\caption{Demonstration of false negatives and false positives on an image segmented by the segmentation algorithm against the same image segmented manually.}
+		\label{fig:realError}
+		\end{figure}
+
 		\subsection{Final Performance on Medical Images}
 		The results of the algorithm using the final optimized parameters are shown in Figures \ref{fig:hip4_25}, \ref{fig:hip4_350}, and \ref{fig:hip4_375}. 
 		\begin{figure}[H]
