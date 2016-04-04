@@ -102,10 +102,10 @@
 
 		\subsection{Level Sets}
 
-		\subsection{Functional Derivations} \label{funcderiv}
+		\subsection{Functional Derivations} \label{sec:funcderiv}
 
 	\section{Design}
-	The functional pieces described in Section \ref{funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
+	The functional pieces described in Section \ref{sec:funcderiv} had to be combined to form complete functionals. These functionals were created based on the invariant properties of the image sets. Of course, medical images and webcam-captured hand gesture images emphasize different invariant properties, thus functionals with different weighting on the functional pieces had to be designed for each application domain.
 
 		\subsection{Medical Images}
 		On the medical imaging side of the design, our project focused on high-contrast medical images such as those created by CT scans of bone. On these types of images, we were able to exploit high colour invariance of both the inside and outside of the outlined structure. To capture the colour properties of the images, we needed to heavily weigh inside and outside mean colour. Additionally, we also included the variance property in our functional, although this was weighted to a much weaker extent. The mean colour functional component captured the fact that the average colour on the inside and outside stayed relatively constant between images. The colour variance functional component captured a higher order term for the distribution of the pixel colours. On top of the mean and variance functionals, the length functional was added to stabilize the gradient descent.
@@ -120,7 +120,7 @@
 
 	\section{Results}
 		
-		\subsection{Final Performance of Medical Images}
+		\subsection{Final Performance on Medical Images}
 		The results of the algorithm using the final optimized parameters are shown in Figures \ref{fig:hip4_25}, \ref{fig:hip4_350}, and \ref{fig:hip4_375}. 
 		\begin{figure}[H]
 			\centering
@@ -148,12 +148,14 @@
 		\end{figure}
 		On image 25 (Figure \ref{fig:hip4_25}), the algorithm incorrectly identified 4.13\% of the image pixels by volume of the ground truth. This corresponds to an incorrect identification of 0.017\% of the image pixels over the entire image. As the algorithm proceeded to subsequent images, the error rate did not increase significantly until the shape of the hip bone changed drastically around the \nth{375} image. This is evidenced by the similar error rate obtained in image 350 (Figure \ref{fig:hip4_350}) compared to image 25. In image 350, the percentage of erroneous pixels was 3.82\% of the volume of the ground truth, and 0.041\% of volume of the entire image. However, by image 375 (Figure \ref{fig:hip4_375}), these error rates increased to 13.12\% and 0.17\%, respectively.
 
-	Overall, the algorithm error rate with these final parameters was averaged over the \nth{25}, \nth{75}, \nth{350}, and \nth{375} images. Due to the amount of manual work required to determine ground truth, the evaluation of the algorithm could only be measured over a subset of the images. The images near the beginning and the end of the sequence were assumed to be most revealing of algorithm performance due to gradual shape changes in this dataset. Over this subset, the average error rate as a fraction of ground truth was 6.00\%. The average error rate as a fraction of the entire image was 0.056\%. While we were aiming to have the average error rate over ground truth lower than 5\%, so the algorithm's final performance did not quite reach our expectations in this regard. However, we were also targeting for our algorithm to have less than a 0.1\% error rate over the entire image region, and it outperformed in this metric.
+		Overall, the algorithm error rate with these final parameters was averaged over the \nth{25}, \nth{75}, \nth{350}, and \nth{375} images. Due to the amount of manual work required to determine ground truth, the evaluation of the algorithm could only be measured over a subset of the images. The images near the beginning and the end of the sequence were assumed to be most revealing of algorithm performance due to gradual shape changes in this dataset. Over this subset, the average error rate as a fraction of ground truth was 6.00\%. The average error rate as a fraction of the entire image was 0.056\%. While we were aiming to have the average error rate over ground truth lower than 5\%, so the algorithm's final performance did not quite reach our expectations in this regard. However, we were also targeting for our algorithm to have less than a 0.1\% error rate over the entire image region, and it outperformed in this metric. See Section \ref{sec:futurework} for areas where the algorithm could have been improved to lower the error rate.
+		
+		\subsection{Final Performance on Hand Gesture Images}
 	\section{Discussion (3bottom)}
 		Mandy
 
 	\section{Conclusion}
-	\section{Future Work}
+	\section{Future Work} \label{sec:futurework}
 		Faisal
 	\nocite{*}
 	\bibliographystyle{plain}
