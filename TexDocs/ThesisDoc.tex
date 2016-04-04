@@ -390,25 +390,25 @@
 		\subsection{Evaluation Criteria}
 		The standard method in medical imaging for evaluating the accuracy of segmentation algorithms is calculating the similarity of the resulting region compared to that produced by manual segmentation [1]. Since these are taken to be the most accurate possible segmentations, results produced manually are known as the ‘ground truth’.
 
-		A proposed method to calculate similarity between regions is given by Mikulka et al. [2]. Consider region A ( I_{A} ) and region B ( I_{B} ), and let I_{A} be the ground truth. Percentage error is comprised of false positives and false negatives. If a pixel at position (x,y) is in I_{B} but not I_{A}, then this is counted as a false positive:
+		A proposed method to calculate similarity between regions is given by Mikulka et al. [2]. Consider region A ( $I_{A}$ ) and region B ( $I_{B}$ ), and let $I_{A}$ be the ground truth. Percentage error is comprised of false positives and false negatives. If a pixel at position (x,y) is in $I_{B}$ but not $I_{A}$, then this is counted as a false positive:
 		
-		\begin{center} E_{Pos} = \sum_{\Omega } |I_{B} - I_{A}| \end{center}
+		\begin{center} $E_{Pos} = \sum_{\Omega } |I_{B} - I_{A}|$ \end{center}
 		
-		Conversely if a pixel at position (x,y) is not in I_{B} but is in I_{A}, then this is counted as a false negative:   
+		Conversely if a pixel at position (x,y) is not in $I_{B}$ but is in $I_{A}$, then this is counted as a false negative:   
 		
-		\begin{center} E_{Neg} = \sum_{\Omega } |I_{A} - I_{B}| \end{center}
+		\begin{center} $E_{Neg} = \sum_{\Omega } |I_{A} - I_{B}|$ \end{center}
 		
 		Then the total error is:
 		
-		\begin{center} E = E_{Pos} + E_{Pos} \end{center}
+		\begin{center} $E = E_{Pos} + E_{Pos}$ \end{center}
 		
 		Percentage error with respect to the total area of the image is (image percentage error) is:
 		
-		\begin{center} \frac{E}{I_{A}} \end{center}
+		\begin{center} $\frac{E}{I_{A}}$ \end{center}
 		
 		Percentage error with respect to the total area of the region from ground truth (region percentage error) is:
 		
-		\begin{center} \frac{E}{\Omega } \end{center}
+		\begin{center} $\frac{E}{\Omega}$ \end{center}
 
 		\begin{figure}[H]
 		\centering
