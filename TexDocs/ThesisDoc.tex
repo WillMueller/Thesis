@@ -79,7 +79,8 @@
 
 \begin{document}
 	\maketitle
-
+	\tableofcontents
+	\newpage
 	\section{Introduction}
 		Imagine an object recorded by a camera and represented in a sequence of 2-dimensional, coloured images. The object may change size due to changes in position (closer to the camera) or even by nature (an inflating balloon). The object may enter a shadow or areas with different lighting causing its brightness and colour to change between images. If the object or the camera moves and rotates, then the location of the object, its shape, and even the background of the object will alter over the sequence of images. Nonetheless, a human could view this sequence of images and associate a region in each image as one object being manipulated. 
 
@@ -222,7 +223,20 @@
 		\subsection{Level Sets}
 			Though simple closed curves are  very intuitive to use, in practice their discretization and their instability for numerical gradient decent make them impractical. Level sets of of a function $u:\Omega\rightarrow\R$ can be used to define the region. In this technique the region $R_1 = {x: x\in\Omega|u(x)\geq0}$. Through the use of Green's Theorem it is possible to convert from a simple closed curve perspective to a level set perspective.
 
-			
+			\begin{prop}\label{pr:curvtofn}
+				Let $\gamma\in C_e$ evolve according to the ordinary differential equation described in theorem \ref{th:decentfunc}:
+				\begin{center}
+					$\frac{d\gamma}{dt}\biggr\rvert_{(s,t)} = - \Bigg(\frac{\partial L}{\partial \gamma}\biggr\rvert_{(s,\gamma(s,t),\dot\gamma(s,t))} - \frac{d}{ds}\bigg(\frac{\partial L}{\partial \dot\gamma}\biggr\rvert_{(s,\gamma(s,t),\dot\gamma(s,t))}\bigg)\Bigg)$
+				\end{center}
+				Let $\vec N_\gamma$ be the unit normal to $\gamma$, Then there exists a function $F : \Omega \rightarrow \R$ such that:
+
+				\begin{equation}\label{eq:greenscurv}
+					\frac{d\gamma}{dt}\biggr\rvert_{(s,t)} = F(\gamma(s,t))\cdot \vec N_\gamma
+				\end{equation}
+
+			\end{prop}
+
+
 
 
 	\section{Design}
