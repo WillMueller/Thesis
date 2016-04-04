@@ -345,7 +345,45 @@
     There are a couple of things to note with the C++ implementation. First, we wanted to simulate a real world application as closely as possible. Mathematically, we know the gradient descent will eventually reach some critical point given enough iterations. However, in a pragmatic setting, it is unfeasible to wait for that many iterations. Hence, we chose to default the number of iterations to 100 as this produced a reasonable computation time on consumer grade hardware. At 100 iterations, the time to process a single image was measured in tens of seconds. For the medical image domain, where image sequences range in the hundreds, this equates to a few hours of computation time. Depending on the urgency of the case, this competes directly with the time it would take humans. This justified the use of 100 iterations as a realistic number to compare this algorithm's ability against ground truth. The last thing to note is the speedup realized by the conversion to a C++ implementation. Keeping everything else constant, the conversion to C++ yielded an increase in performance by 400-500\%. This turned simulations that took a day into one that took several hours.
 
 	\section{Results}
+		\subsection{Evaluation Criteria}
+		The standard method in medical imaging for evaluating the accuracy of segmentation algorithms is calculating the similarity of the resulting region compared to that produced by manual segmentation [1]. Since these are taken to be the most accurate possible segmentations, results produced manually are known as the ‘ground truth’.
+
+		A proposed method to calculate similarity between regions is given by Mikulka et al. [2]. Consider region A ( I_{A} ) and region B ( I_{B} ), and let I_{A} be the ground truth. Percentage error is comprised of false positives and false negatives. If a pixel at position (x,y) is in I_{B} but not I_{A}, then this is counted as a false positive:
 		
+		\begin{center} E_{Pos} = \sum_{\Omega } |I_{B} - I_{A}| \end{center}
+		
+		Conversely if a pixel at position (x,y) is not in I_{B} but is in I_{A}, then this is counted as a false negative:   
+		
+		\begin{center} E_{Neg} = \sum_{\Omega } |I_{A} - I_{B}| \end{center}
+		
+		Then the total error is:
+		
+		\begin{center} E = E_{Pos} + E_{Pos} \end{center}
+		
+		Percentage error with respect to the total area of the image is (image percentage error) is:
+		
+		\begin{center} \frac{E}{I_{A}} \end{center}
+		
+		Percentage error with respect to the total area of the region from ground truth (region percentage error) is:
+		
+		\begin{center} \frac{E}{\Omega } \end{center}
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/FalsePosFalseNeg.png}
+		\caption{Demonstration of false negatives and false positives where region A is the ground truth.}
+		\label{fig:falsePosFalseNeg}
+		\end{figure}
+
+		\ref{fig:realError} demonstrates the false positives and false negatives of an image segmented by the segmentation algorithm against the same image segmented manually. The red region indicates false negatives, and the blue region indicates true postives (pixels that were in both the regions identified by the algorithm and by manual segmentation). No false positives were identified by the algorithm. The image percentage error is 0.3\%.
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{Mandy/realError.png}
+		\caption{Demonstration of false negatives and false positives on an image segmented by the segmentation algorithm against the same image segmented manually.}
+		\label{fig:realError}
+		\end{figure}
+
 		\subsection{Final Performance on Medical Images}
 		The results of the algorithm using the final optimized parameters are shown in Figures \ref{fig:hip4_25}, \ref{fig:hip4_350}, and \ref{fig:hip4_375}. 
 		\begin{figure}[H]
