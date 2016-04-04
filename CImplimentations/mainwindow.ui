@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>700</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,10 +23,34 @@
       <property name="topMargin">
        <number>0</number>
       </property>
-      <item row="1" column="3">
-       <widget class="QPushButton" name="next_button">
+      <item row="2" column="1" colspan="2">
+       <widget class="QLabel" name="mean_label">
         <property name="text">
-         <string>Next</string>
+         <string>Mean</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="mean_outside_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="QLineEdit" name="iterations_edit">
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="mean_inside_edit">
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
       </item>
@@ -37,8 +61,33 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="4">
-       <widget class="QGraphicsView" name="graphicsView"/>
+      <item row="1" column="5">
+       <widget class="QPushButton" name="next_button">
+        <property name="text">
+         <string>Next</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="com_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QLineEdit" name="variance_outside_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QPushButton" name="previous_button">
+        <property name="text">
+         <string>Previous</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="run_button">
@@ -47,10 +96,104 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="previous_button">
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="length_edit">
         <property name="text">
-         <string>Previous</string>
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="6">
+       <widget class="QGraphicsView" name="graphicsView"/>
+      </item>
+      <item row="2" column="3" colspan="2">
+       <widget class="QLabel" name="variance_label">
+        <property name="text">
+         <string>Variance</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="com_title_label">
+        <property name="text">
+         <string>Center of Mass:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="length_label">
+        <property name="text">
+         <string>Length</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QLineEdit" name="variance_inside_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QLabel" name="area_label">
+        <property name="text">
+         <string>Area</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="QLineEdit" name="area_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="com_label">
+        <property name="text">
+         <string>Mean</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QLabel" name="iterations_label">
+        <property name="text">
+         <string>Iterations</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QLineEdit" name="pixel_edit">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLabel" name="pixel_label">
+        <property name="text">
+         <string>Pixel Tracker</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -63,7 +206,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>700</width>
      <height>22</height>
     </rect>
    </property>

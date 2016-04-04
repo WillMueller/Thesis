@@ -34,9 +34,21 @@ void MainWindow::on_run_button_clicked()
     m_output_filename = m_filename.substr(0,last);
     m_output_filename = m_output_filename + "/output.";
 
+    // Assign coefficients
+
+    m_level_set.m_coef_length = stof(ui->length_edit->text().toStdString());
+    m_level_set.m_coef_mean_inside = stof(ui->mean_inside_edit->text().toStdString());
+    m_level_set.m_coef_mean_outside = stof(ui->mean_outside_edit->text().toStdString());
+    m_level_set.m_coef_variance_inside = stof(ui->variance_inside_edit->text().toStdString());
+    m_level_set.m_coef_variance_outside = stof(ui->variance_outside_edit->text().toStdString());
+    m_level_set.m_coef_area = stof(ui->area_edit->text().toStdString());
+    m_level_set.m_coef_com = stof(ui->com_edit->text().toStdString());
+    m_level_set.m_coef_pixel = stof(ui->pixel_edit->text().toStdString());
+    m_level_set.m_iterations = stoi(ui->iterations_edit->text().toStdString());
+
     // If outside region set to -1
     // If inside region set to +1
-    // Magical color is: RGB = (255,0,0)
+    // Magical color is: RGB = (255,0,23)
 
     for(int i = 1; i < m_level_set.m_width-1; i++)
     {
@@ -62,6 +74,16 @@ void MainWindow::on_run_button_clicked()
     m_picture_num = m_picture_num+1;
     std::string name = (m_filename + std::to_string(m_picture_num) + m_file_extension);
 
+    // Get parameters from first image and paint border
+    // This is done because the loaded image is
+    // the first image with the region coloured in
+    m_level_set.m_image_master = QImage(QString::fromStdString(name)).convertToFormat(QImage::Format_RGB32);
+    m_level_set.calculate_parameters();
+    m_level_set.paint_border();
+    m_level_set.m_image.save(QString::fromStdString(m_output_filename + std::to_string(m_picture_num) + m_file_extension));
+    m_picture_num = m_picture_num+1;
+    name = (m_filename + std::to_string(m_picture_num) + m_file_extension);
+
     // Loop while there are still more pictures
     while(FILE *file = fopen(name.c_str(), "r"))
     {
@@ -70,14 +92,20 @@ void MainWindow::on_run_button_clicked()
         // t is a measure of how fast the functional is moving
         // Current scheme is to do 100 iterations
         t = 0;
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < m_level_set.m_iterations; i++)
         {
             t += m_level_set.descent_func();
         }
 
-        m_level_set.paint_border();
+        // Refresh parameters
+        m_level_set.calculate_parameters();
 
-        m_level_set.m_image.save(QString::fromStdString(m_output_filename + std::to_string(m_picture_num) + ".png"));
+        m_level_set.paint_border();
+        m_level_set.m_image.save(QString::fromStdString(m_output_filename + std::to_string(m_picture_num) + m_file_extension));
+
+        // reset u to +/- 1
+        //m_level_set.unitize_u();
+
         QPixmap pixmap(QPixmap::fromImage(m_level_set.m_image));
         QGraphicsScene* scene = new QGraphicsScene;
         scene->addPixmap(pixmap);
@@ -87,6 +115,9 @@ void MainWindow::on_run_button_clicked()
 
         ui->graphicsView->repaint();
         qApp->processEvents();
+
+        // Close file and prepare new file name
+        fclose(file);
 
         m_picture_num += 1;
         name = (m_filename + std::to_string(m_picture_num) + m_file_extension);
@@ -166,6 +197,7 @@ void MainWindow::on_next_button_clicked()
     std::string name = (m_filename + std::to_string(m_picture_num) + m_file_extension);
     if (FILE *file = fopen(name.c_str(), "r"))
     {
+        fclose(file);
     }
     else
     {
